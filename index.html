@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inverter Electric - HMI Pro v13.0</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="brand"><i class="fas fa-microchip"></i> <span>INVERTER <strong>ELECTRIC</strong></span></div>
+        <div class="main-telemetry">
+            <div class="stat"><span>Velocidade</span><strong id="speed">0.0</strong><small>km/h</small></div>
+            <div class="stat"><span>Singulação</span><strong id="avg-singulation">0.0</strong><small>%</small></div>
+            <div class="stat"><span>Economia</span><strong id="seeds-saved">0</strong><small>s</small></div>
+            <div class="stat-clock"><span id="display-date">--/--/--</span><strong id="display-time">00:00:00</strong></div>
+        </div>
+        <div class="gps-status"><span>RTK FIX</span> <i class="fas fa-satellite"></i></div>
+    </header>
+
+    <main class="dashboard">
+        <aside class="controls">
+            <button class="btn-side" id="btn-iniciar" onclick="toggleSimulacao()">
+                <i class="fas fa-play"></i><span>INICIAR</span>
+            </button>
+            <button class="btn-side" onclick="mudarMenu('autopilot', this)"><i class="fas fa-robot"></i><span>PILOTO</span></button>
+            <button class="btn-side" onclick="mudarMenu('alarmes', this)"><i class="fas fa-bell"></i><span>ALARMES</span></button>
+            <button class="btn-side" onclick="mudarMenu('ajustes', this)"><i class="fas fa-cog"></i><span>AJUSTES</span></button>
+        </aside>
+
+        <section id="conteudo-central">
+            <div id="mapa-container">
+                <div id="map"></div>
+                <div class="weather-widget">
+                    <div class="w-item"><i class="fas fa-wind"></i> <span id="w-wind">0</span> km/h</div>
+                </div>
+            </div>
+            <div id="menu-overlay" class="hidden">
+                <div class="overlay-header">
+                    <h1 id="menu-titulo">MENU</h1>
+                    <button class="btn-close" onclick="fecharMenu()">VOLTAR <i class="fas fa-undo"></i></button>
+                </div>
+                <div id="menu-content" class="menu-body"></div>
+            </div>
+        </section>
+
+        <aside class="sensors-panel">
+            <div class="gauge-mini"><span>Diesel</span><div class="progress-bar"><div id="fuel-bar" style="width: 85%;"></div></div></div>
+            <div class="gauge-mini"><span>Área</span><strong id="area-val">0.00</strong><small>ha</small></div>
+        </aside>
+    </main>
+
+    <footer class="bottom-nav">
+        <button class="nav-item" onclick="mudarMenu('performance', null)"><i class="fas fa-chart-bar"></i> PERFORMANCE</button>
+        <button class="nav-item" onclick="mudarMenu('telemetria', null)"><i class="fas fa-chart-line"></i> TELEMETRIA</button>
+        <button class="nav-item" onclick="mudarMenu('mapa', null)"><i class="fas fa-map-marked-alt"></i> MAPA</button> 
+        <button class="nav-item" onclick="mudarMenu('diagnostico', null)"><i class="fas fa-stethoscope"></i> DIAGNÓSTICO</button>
+        <button class="nav-item" onclick="mudarMenu('sistema', null)"><i class="fas fa-microchip"></i> SISTEMA</button>
+    </footer>
+
+    <div id="numpad-overlay" class="hidden">
+        <div class="numpad">
+            <div class="numpad-display"><span id="num-val"></span></div>
+            <div class="numpad-keys">
+                <button onclick="numKey(7)">7</button><button onclick="numKey(8)">8</button><button onclick="numKey(9)">9</button>
+                <button onclick="numKey(4)">4</button><button onclick="numKey(5)">5</button><button onclick="numKey(6)">6</button>
+                <button onclick="numKey(1)">1</button><button onclick="numKey(2)">2</button><button onclick="numKey(3)">3</button>
+                <button onclick="numKey('.')">.</button><button onclick="numKey(0)">0</button><button class="btn-clear" onclick="numKey('clear')">C</button>
+            </div>
+            <button class="btn-confirm" onclick="confirmNum()">CONFIRMAR</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="config.js"></script>
+    <script src="talhao.js"></script>
+    <script src="mapa.js"></script>
+    <script src="ui.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
